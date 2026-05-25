@@ -6,14 +6,10 @@
 <div class="container my-5">
     <h1 class="mb-4">🛒 Shopping Cart</h1>
 
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success">{{ message }}</div>
-    {% endfor %}
-
     {% if items is empty %}
         <div class="alert alert-info">
-            Votre panier est vide.
-            <a href="{{ path('app_home') }}" class="alert-link">Continuer les achats</a>
+            Your cart is empty.
+            <a href="{{ path('app_home') }}" class="alert-link">Continue shopping</a>
         </div>
     {% else %}
         <div class="row">
@@ -23,9 +19,9 @@
                         <table class="table align-middle">
                             <thead>
                                 <tr>
-                                    <th>Produit</th>
-                                    <th>Prix</th>
-                                    <th>Quantité</th>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
                                     <th>Total</th>
                                     <th></th>
                                 </tr>
@@ -43,10 +39,9 @@
                                     <td>{{ item.quantity }}</td>
                                     <td class="fw-bold">${{ item.total }}</td>
                                     <td>
-                                        <a href="{{ path('app_cart_remove', {id: item.product.id}) }}" 
-                                           class="btn btn-sm btn-outline-danger">
-                                            🗑️ Supprimer
-                                        </a>
+                                        <form method="post" action="{{ path('app_cart_remove', {id: item.product.id}) }}">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">🗑️ Remove</button>
+                                        </form>
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -56,37 +51,41 @@
                 </div>
                 <div class="d-flex justify-content-between">
                     <a href="{{ path('app_home') }}" class="btn btn-outline-primary">
-                        ← Continuer les achats
+                        ← Continue Shopping
                     </a>
-                    <a href="{{ path('app_cart_clear') }}" class="btn btn-outline-danger">
-                        🗑️ Vider le panier
-                    </a>
+                    <form method="post" action="{{ path('app_cart_clear') }}">
+                        <button type="submit" class="btn btn-outline-danger">🗑️ Clear Cart</button>
+                    </form>
                 </div>
             </div>
 
             <div class="col-lg-4">
                 <div class="card">
                     <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">Résumé de la commande</h5>
+                        <h5 class="mb-0">Order Summary</h5>
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-2">
-                            <span>Sous-total :</span>
+                            <span>Subtotal:</span>
                             <span>${{ total }}</span>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
-                            <span>Livraison :</span>
-                            <span class="text-success">Gratuite</span>
+                            <span>Shipping:</span>
+                            <span class="text-success">Free</span>
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between fw-bold fs-5">
-                            <span>Total :</span>
+                            <span>Total:</span>
                             <span class="text-success">${{ total }}</span>
                         </div>
                         <div class="d-grid mt-3">
-                            <button class="btn btn-success btn-lg">
-                                ✅ Passer la commande
-                            </button>
+                            {% if app.user %}
+                                <button class="btn btn-success btn-lg">✅ Proceed to Checkout</button>
+                            {% else %}
+                                <a href="{{ path('app_login') }}" class="btn btn-warning btn-lg">
+                                    Login to Checkout
+                                </a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

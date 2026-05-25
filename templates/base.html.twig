@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,28 +21,41 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_home') }}">Produits</a>
+                    <a class="nav-link" href="{{ path('app_home') }}">Products</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_categories') }}">Catégories</a>
+                    <a class="nav-link" href="{{ path('app_categories') }}">Categories</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_cart') }}">🛒 Panier</a>
+                    <a class="nav-link" href="{{ path('app_cart') }}">🛒 Cart</a>
                 </li>
                 <li class="nav-item">
-                    {# Après #}
-            {% if app.user %}
-                <a class="nav-link" href="{{ path('app_profil') }}">👤 {{ app.user.userIdentifier }}</a>
-                {% else %}
-                <a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
+                    {% if app.user %}
+                        <a class="nav-link" href="{{ path('app_profil') }}">👤 Welcome, {{ app.user.fullName }}</a>
+                    {% else %}
+                        <a class="nav-link" href="{{ path('app_login') }}">Login</a>
+                    {% endif %}
+                </li>
+                {% if app.user %}
+                <li class="nav-item">
+                    <a class="nav-link text-danger" href="{{ path('app_logout') }}">Logout</a>
+                </li>
                 {% endif %}
-                </li>
             </ul>
         </div>
     </div>
 </nav>
 
 <div class="container mt-4">
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endfor %}
+
     {% block body %}{% endblock %}
 </div>
 

@@ -33,31 +33,31 @@ final class CartController extends AbstractController
         $product = $productRepository->find($id);
 
         if (!$product) {
-            throw $this->createNotFoundException('Produit introuvable !');
+            throw $this->createNotFoundException('Product not found!');
         }
 
-        $quantity = (int) $request->request->get('quantity', 1);
+        $quantity = max(1, (int) $request->request->get('quantity', 1));
         $this->cartHandler->addToCart($product, $quantity);
 
-        $this->addFlash('success', 'Produit ajouté au panier ! 🛒');
+        $this->addFlash('success', 'Product added to cart! 🛒');
 
         return $this->redirectToRoute('app_cart');
     }
 
-    #[Route('/cart/remove/{id}', name: 'app_cart_remove')]
+    #[Route('/cart/remove/{id}', name: 'app_cart_remove', methods: ['POST'])]
     public function remove(int $id): Response
     {
         $this->cartHandler->removeFromCart($id);
-        $this->addFlash('success', 'Produit retiré du panier !');
+        $this->addFlash('success', 'Product removed from cart.');
 
         return $this->redirectToRoute('app_cart');
     }
 
-    #[Route('/cart/clear', name: 'app_cart_clear')]
+    #[Route('/cart/clear', name: 'app_cart_clear', methods: ['POST'])]
     public function clear(): Response
     {
         $this->cartHandler->clearCart();
-        $this->addFlash('success', 'Panier vidé !');
+        $this->addFlash('success', 'Cart cleared.');
 
         return $this->redirectToRoute('app_cart');
     }
