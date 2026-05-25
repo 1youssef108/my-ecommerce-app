@@ -15,7 +15,6 @@
                     <hr>
                     <ul class="list-unstyled">
                         <li class="mb-2"><a href="#profile" class="text-decoration-none">Profile Information</a></li>
-                        <li class="mb-2"><a href="#orders" class="text-decoration-none">My Orders</a></li>
                         <li class="mb-2">
                             <a href="{{ path('app_logout') }}" class="text-decoration-none text-danger">Logout</a>
                         </li>
@@ -38,12 +37,6 @@
                         <div class="col-md-6">
                             <label class="fw-bold">Email:</label>
                             <p>{{ user.email }}</p>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label class="fw-bold">Roles:</label>
-                            <p>{{ user.roles|join(', ') }}</p>
                         </div>
                     </div>
                 </div>
